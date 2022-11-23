@@ -1,12 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+
 
 @Autonomous(name = "red zone red terminal") //Jayla
 public class RedZoneRedTerminal extends LinearOpMode {
+
     @Override
     public void runOpMode() {
-//        Robot robot = new Robot(hardwareMap);
+        Robot robot = new Robot(hardwareMap);
 
         RobotEncoded robotencoded = new RobotEncoded(hardwareMap);
 
@@ -32,5 +41,8 @@ public class RedZoneRedTerminal extends LinearOpMode {
         robotencoded.Forward(24, 700);
         //sleep(2000);
     }
+
+
+
 }
 
