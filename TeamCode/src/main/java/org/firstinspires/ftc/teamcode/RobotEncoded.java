@@ -20,12 +20,16 @@ public class RobotEncoded {
     DcMotorEx backLeft;
     DcMotorEx backRight;
 
+    DcMotorEx linearSlide;
+
 //    BNO055IMU imu;
 
     final double TICKS_PER_MOTOR_ROTATION = 537.7;
     final double GEAR_REDUCTION = 1;
     final double WHEEL_DIAMETER_INCHES = 3.77953;
     final double TICKS_PER_INCH = (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
+
+    final double TICKS_PER_INCH_LS = 360;
 
     final double degreesPerInch = 360;
 
@@ -39,10 +43,14 @@ public class RobotEncoded {
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
+        linearSlide = hardwareMap.get(DcMotorEx.class, "linearSlide");
+
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 //        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -97,8 +105,7 @@ public class RobotEncoded {
             TurnR(motorPower);
             error = degrees - getAngle();
 
-            //TODO: continue typing
-        }   //penis teehee
+        }
     }
 
      */
@@ -356,5 +363,15 @@ public class RobotEncoded {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void raiseSlide (double velocity, int distanceInches) {
+
+        linearSlide.setTargetPosition((int)(distanceInches * TICKS_PER_INCH_LS));
+        linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlide.setVelocity(velocity);
+
+        while(linearSlide.isBusy()) { }
+
     }
 }

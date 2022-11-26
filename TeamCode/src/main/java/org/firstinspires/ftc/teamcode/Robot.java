@@ -75,13 +75,17 @@ public class Robot {
 
         while(Math.abs(error) > 2) {
             double motorPower = (error < 0 ? -Math.abs(power) : Math.abs(power));
-            TurnR(motorPower);
-            error = degrees - getAngle();
+
 
             try {
                 t.addData("error", error);
+//                t.addData("/)
                 t.update();
             } catch (Exception err) {}
+
+            TurnR(motorPower);
+            error = degrees - getAngle();
+
 
         }
 
