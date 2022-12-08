@@ -27,6 +27,8 @@ public class Robot {
     public Orientation lastAngles = new Orientation();
     public double currAngle = 0.0;
 
+    private double TURN_P = 0.002777777778; // tune this
+
 
     // constructor
     public Robot(HardwareMap hardwareMap) {
@@ -68,25 +70,31 @@ public class Robot {
         return currAngle;
     }
 
-    public void turn(double degrees, double power, Telemetry t) {
+    public void turn(double degrees, double power) {
         resetAngle();
 
         double error = degrees;
 
-        while(Math.abs(error) > 2) {
-            double motorPower = (error < 0 ? -Math.abs(power) : Math.abs(power));
-
-
-            try {
-                t.addData("error", error);
-//                t.addData("/)
-                t.update();
-            } catch (Exception err) {}
+        while(Math.abs(error) > 5) {
+            double motorPower = error < 0 ? -Math.abs(power) : Math.abs(power);
 
             TurnR(motorPower);
             error = degrees - getAngle();
+        }
 
+        Stop();
+    }
 
+    public void turnPID(double degrees) {
+        resetAngle();
+
+        double error = degrees;
+
+        while(Math.abs(error) > 5) {
+            double motorPower = error < 0 ? -Math.abs(TURN_P * error) : Math.abs(TURN_P * error);
+
+            TurnR(motorPower);
+            error = degrees - getAngle();
         }
 
         Stop();

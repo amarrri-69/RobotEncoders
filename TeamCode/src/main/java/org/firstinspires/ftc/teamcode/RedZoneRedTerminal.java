@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 
 
-@Autonomous(name = "red zone red terminal") //Jayla
+@Autonomous(name = "red zone red terminal", group = "basic auto") //Jayla
 public class RedZoneRedTerminal extends LinearOpMode {
 
     @Override
@@ -22,27 +22,19 @@ public class RedZoneRedTerminal extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
 
-        robotencoded.Forward(6,700);
-      //  sleep(250);
-        //robot.Stop();
+        robotencoded.Forward(12,700);
 
-        robotencoded.turnLeft(90, 700);
-        //sleep(1000);
+        robotencoded.turnLeft(12, 700);
 
         robotencoded.Forward(24,700);
-       // sleep(2000);
 
         robotencoded.backward(6, 700);
-        //sleep(1000);
 
         robotencoded.turnRight(90, 700);
-        //sleep(1000);
 
         robotencoded.Forward(24, 700);
-        //sleep(2000);
+
     }
-
-
 
 }
 

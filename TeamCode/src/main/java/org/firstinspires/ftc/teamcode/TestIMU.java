@@ -23,8 +23,8 @@ public class TestIMU extends LinearOpMode {
 //            }
 //    }
 
-        robot.turn(90, 0.2, telemetry);
-        //sleep(3000);
+        robot.turnPID(90);
+        sleep(3000);
 
         //robot.turnTo(-90, 0.5);
         if (isStopRequested()) return;

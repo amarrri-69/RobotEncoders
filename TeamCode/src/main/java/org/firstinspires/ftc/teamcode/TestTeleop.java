@@ -31,6 +31,7 @@ public class TestTeleop extends OpMode {
         linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
 
         claw = hardwareMap.get(Servo.class, "claw");
+        claw.scaleRange(0, 1);
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
@@ -40,7 +41,7 @@ public class TestTeleop extends OpMode {
     public void loop() {   // runs on multiple times
         double x = -gamepad1.left_stick_x; // stores data in gp
         double y = gamepad1.left_stick_y;
-        double r = gamepad1.right_stick_x;
+        double r = -gamepad1.right_stick_x;
 
         if (gamepad1.right_bumper) {
             frontLeft.setPower((y + x + r) * slowVal);
@@ -54,29 +55,32 @@ public class TestTeleop extends OpMode {
             backLeft.setPower((y - x + r) * defaultVal);
             backRight.setPower((y + x - r) * defaultVal);
 
-        if (gamepad2.a) { // a = raise linear slide
+
+
+            //linear slide motor
+        if (gamepad2.dpad_up) { // raise linear slide
              linearSlide.setPower(0.3);
             }
-
-        else if (gamepad2.b) { // b = lowering linear slide
+        else if (gamepad2.dpad_down) { // lowering linear slide
              linearSlide.setPower(-0.3);
         }
 
-        if (gamepad2.y) { // move to 0 degrees. close claw
-             claw.setPosition(0);
-        }
 
-        else if (gamepad2.x) { // move to 90 degrees. open claw
+
+
+        //claw servo
+        if (gamepad2.y) { // move to 0 degrees. open claw
              claw.setPosition(0.5);
         }
+        else if (gamepad2.x) { // move to 90 degrees. close claw
+             claw.setPosition(1);
+        }
 
-        telemetry.addData("frontLeft: ", y - x + r);
-        telemetry.addData("frontRight:", y + x - r);
-        telemetry.addData("backLeft:", y + x + r);
-        telemetry.addData("backRight", y - x - r);
         telemetry.addData("y:", y);
         telemetry.addData("x: ", x);
         telemetry.addData("r", r);
+        //telemetry.addData("linear slide power", linearSlide.getPower());
+        telemetry.addData("claw position", claw.getPosition());
         telemetry.update();
         }
     }
