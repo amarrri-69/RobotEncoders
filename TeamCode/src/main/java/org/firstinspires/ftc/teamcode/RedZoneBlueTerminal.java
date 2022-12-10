@@ -13,19 +13,19 @@ public class RedZoneBlueTerminal extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
 
-        robotencoded.Forward(12,700);
+        robotencoded.forward(12,700);
 
         robotencoded.turnRight(12,700);
 
-        robotencoded.Forward(24,700);
+        robotencoded.forward(24,700);
 
         robotencoded.turnLeft(12,700);
 
-        robotencoded.Forward(24,700);
+        robotencoded.forward(24,700);
 
         robotencoded.turnLeft(12,700);
 
-        robotencoded.Forward(24,700);
+        robotencoded.forward(24,700);
 
     }
 }

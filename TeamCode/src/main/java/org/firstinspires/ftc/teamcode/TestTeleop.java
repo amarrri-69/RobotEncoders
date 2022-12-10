@@ -65,9 +65,6 @@ public class TestTeleop extends OpMode {
              linearSlide.setPower(-0.3);
         }
 
-
-
-
         //claw servo
         if (gamepad2.y) { // move to 0 degrees. open claw
              claw.setPosition(0.5);
@@ -79,7 +76,7 @@ public class TestTeleop extends OpMode {
         telemetry.addData("y:", y);
         telemetry.addData("x: ", x);
         telemetry.addData("r", r);
-        //telemetry.addData("linear slide power", linearSlide.getPower());
+        telemetry.addData("linear slide power", linearSlide.getPower());
         telemetry.addData("claw position", claw.getPosition());
         telemetry.update();
         }

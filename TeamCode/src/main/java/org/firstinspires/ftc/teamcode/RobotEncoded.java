@@ -1,17 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-
-
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotEncoded {
 
@@ -22,8 +14,6 @@ public class RobotEncoded {
 
     DcMotorEx linearSlide;
 
-//    BNO055IMU imu;
-
     final double TICKS_PER_MOTOR_ROTATION = 537.7;
     final double GEAR_REDUCTION = 1;
     final double WHEEL_DIAMETER_INCHES = 3.77953;
@@ -31,6 +21,9 @@ public class RobotEncoded {
 
     final double LS_DIAMETER_INCHES = 1.404;
     final double TICKS_PER_INCH_LS =  (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (LS_DIAMETER_INCHES * Math.PI);;
+
+    final double MAX_TICKS_LS = 30;
+    final double MIN_TICKS_LS = 10;
 
     //final double degreesPerInch = 360;
 
@@ -51,7 +44,7 @@ public class RobotEncoded {
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-      //  linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 //        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -61,26 +54,11 @@ public class RobotEncoded {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
-//        imu = hardwareMap.get(BNO055IMU.class, "imu");
-
 //        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // set default ticks back to 0
-//            int position = frontLeft.getCurrentPosition();
-//            //Left.setmode.settargetPosition();
-//
-
-//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-//        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-//        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-//        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-//        parameters.loggingEnabled = true;
-//        parameters.loggingTag = "IMU";
-//        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-//        imu.initialize(parameters);
     }
 
 
-    public void TurnR(double Power) {
+    public void turnR(double Power) {
         frontRight.setPower(Power);
         frontLeft.setPower(-Power);
         backRight.setPower(Power);
@@ -97,7 +75,7 @@ public class RobotEncoded {
     }
 
 
-    public void Forward(int distanceInches, double velocity) {
+    public void forward(int distanceInches, double velocity) {
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
@@ -269,7 +247,7 @@ public class RobotEncoded {
 
     }
 
-    public void diagonalUpRight(int distanceInches, double velocity) {
+    public void upRight(int distanceInches, double velocity) {
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         backRight.setTargetPosition(backRight.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
 
@@ -285,7 +263,7 @@ public class RobotEncoded {
         frontLeft.setVelocity(0);
         backRight.setVelocity(0);
     }
-    public void diagonaldownLeft ( int distanceInches, double velocity){
+    public void downLeft ( int distanceInches, double velocity){
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         backRight.setTargetPosition(backRight.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
 
@@ -302,7 +280,7 @@ public class RobotEncoded {
         backRight.setVelocity(0);
     }
 
-    public void diagonaldownRight ( int distanceInches, double velocity){
+    public void downRight ( int distanceInches, double velocity){
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
 
@@ -319,7 +297,7 @@ public class RobotEncoded {
         backLeft.setVelocity(0);
     }
 
-    public void stop () {
+    public void stop_bot () {
         frontLeft.setVelocity(0);
         frontRight.setVelocity(0);
         backLeft.setVelocity(0);
@@ -331,13 +309,13 @@ public class RobotEncoded {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void raiseSlide (double velocity, int distanceInches) {
+    public void raiseSlide(double velocity, int distanceInches) {
 
-        // if ((int) (distanceInches * TICKS_HER_INCH_HS) >= MAX_TICKS_LS || (int) (distanceInches * TICKS_HER_INCH_HS) < 0) return;
+        if ((int) (distanceInches * TICKS_PER_INCH_LS) >= MAX_TICKS_LS || (int) (distanceInches * TICKS_PER_INCH_LS) < 0) return;
 
-       // linearSlide.setTargetPosition((int)(distanceInches * TICKS_PER_INCH_LS));
-        //linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //linearSlide.setVelocity(velocity);
+       linearSlide.setTargetPosition((int)(distanceInches * TICKS_PER_INCH_LS));
+       linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       linearSlide.setVelocity(velocity);
 
         //while(linearSlide.isBusy()) { }
     }
