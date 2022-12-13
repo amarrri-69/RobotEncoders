@@ -14,16 +14,16 @@ public class RobotEncoded {
 
     DcMotorEx linearSlide;
 
-    final double TICKS_PER_MOTOR_ROTATION = 537.7;
-    final double GEAR_REDUCTION = 1;
-    final double WHEEL_DIAMETER_INCHES = 3.77953;
-    final double TICKS_PER_INCH = (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
+    static final double TICKS_PER_MOTOR_ROTATION = 537.7;
+    static final double GEAR_REDUCTION = 1;
+    static final double WHEEL_DIAMETER_INCHES = 3.77953;
+    static final double TICKS_PER_INCH = (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
-    final double LS_DIAMETER_INCHES = 1.404;
-    final double TICKS_PER_INCH_LS =  (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (LS_DIAMETER_INCHES * Math.PI);;
+    static final double LS_DIAMETER_INCHES = 1.404;
+    static final double TICKS_PER_INCH_LS =  (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (LS_DIAMETER_INCHES * Math.PI);;
 
-    final double MAX_TICKS_LS = 30;
-    final double MIN_TICKS_LS = 10;
+    static final double MAX_TICKS_LS = 30;
+    static final double MIN_TICKS_LS = 10;
 
     //final double degreesPerInch = 360;
 

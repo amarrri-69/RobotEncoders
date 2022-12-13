@@ -6,28 +6,24 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class BlueZoneRedTerminal extends LinearOpMode {
     @Override
     public void runOpMode() {
-        Robot robot = new Robot(hardwareMap);
+    //    Robot robot = new Robot(hardwareMap);
 
         RobotEncoded robotencoded = new RobotEncoded(hardwareMap);
 
         waitForStart();
-        if (isStopRequested()) return;
+    //    if (isStopRequested()) return;
 
-        robotencoded.forward(12,700);
+        robotencoded.forward(3,800);
 
-        robotencoded.turnLeft(12,700);
+        robotencoded.turnLeft(24,800);
 
-        robotencoded.forward(24,700);
+        robotencoded.forward(24,800);
 
-        robotencoded.turnRight(12,700);
+        robotencoded.backward(18, 800);
 
-        robotencoded.forward(24,700);
+        robotencoded.turnRight(24,800);
 
-        robotencoded.turnLeft(90,700);
-
-        robotencoded.forward(12,700);
-
-        robotencoded.backward(12,700);
+        robotencoded.forward(24,800);
 
         if (opModeIsActive()) {
             telemetry.addData("front right", robotencoded.frontRight.getPower());
