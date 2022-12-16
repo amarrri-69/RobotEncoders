@@ -6,17 +6,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp (name="main")
 public class TestTeleop extends OpMode {
 
-    /* asdf */
-    double GJ = 0; //ground junction
-    double LJ = 12.5; //low junction
-    double MJ = 22.5; //medium junction
-    double HJ = 32.5; //high junction
+
+    static double GJ = 0; //ground junction
+    static double LJ = 14.5; //low junction
+    static double MJ = 24.5; //medium junction
+    static double HJ = 34.5; //high junction
     double lsHeight = 0;
 
     double slowVal = 0.4;
@@ -42,8 +43,8 @@ public class TestTeleop extends OpMode {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
+        linearSlide.setDirection(DcMotorSimple.Direction.REVERSE);
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         claw = hardwareMap.get(Servo.class, "claw");
         claw.scaleRange(0, 1);
@@ -60,32 +61,24 @@ public class TestTeleop extends OpMode {
             frontRight.setPower((y - x - r) * slowVal);
             backLeft.setPower((y - x + r) * slowVal);
             backRight.setPower((y + x - r) * slowVal);
-        }
-        else {
+        } else {
             frontLeft.setPower((y + x + r) * defaultVal);
             frontRight.setPower((y - x - r) * defaultVal);
             backLeft.setPower((y - x + r) * defaultVal);
             backRight.setPower((y + x - r) * defaultVal);
         }
 
-//            //linear slide motor
-//        if (gamepad2.dpad_up) { // raise linear slide
-//             linearSlide.setPower(0.28);
-//            }
-//        else if (gamepad2.dpad_down) { // lowering linear slide
-//             linearSlide.setPower(-0.26);
-//        }
 
         //claw servo
-        if (gamepad2.y) { // move to 0 degrees. open claw
-             claw.setPosition(0.4);
+        if (gamepad2.right_bumper) { // open claw
+            claw.setPosition(0.5);
         }
-        else if (gamepad2.x) { // move to 90 degrees. close claw
-             claw.setPosition(0.9);
+        else if (gamepad2.left_bumper) { // close claw
+             claw.setPosition(0.3);
         }
 
 
-        //linear slide motion
+        // linear slide motion
         if (gamepad2.a) {
             lsHeight = GJ;
         }
@@ -99,16 +92,20 @@ public class TestTeleop extends OpMode {
             lsHeight = HJ;
         }
 
-        linearSlide.setTargetPosition((int)(lsHeight * TICKS_PER_INCH_LS));
-        if (linearSlide.getCurrentPosition() != lsHeight * TICKS_PER_INCH_LS) {
-            linearSlide.setPower(0.25);
-        }
+        if (linearSlide.getCurrentPosition() != (int) (lsHeight * TICKS_PER_INCH_LS)) {
+            linearSlide.setTargetPosition((int)(lsHeight * TICKS_PER_INCH_LS));
+            linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            linearSlide.setPower(0.4);
+        } else linearSlide.setPower(0);
 
         telemetry.addData("y:", y);
         telemetry.addData("x: ", x);
         telemetry.addData("r", r);
         telemetry.addData("linear slide power", linearSlide.getPower());
         telemetry.addData("claw position", claw.getPosition());
+        telemetry.addData("cur pos", linearSlide.getCurrentPosition());
+        telemetry.addData("target pos", lsHeight * TICKS_PER_INCH_LS);
         telemetry.update();
+//    }
     }
 }

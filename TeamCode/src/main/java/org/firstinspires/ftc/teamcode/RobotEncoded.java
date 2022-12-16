@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotEncoded {
 
@@ -14,13 +15,15 @@ public class RobotEncoded {
 
     DcMotorEx linearSlide;
 
+    Servo claw;
+
     static final double TICKS_PER_MOTOR_ROTATION = 537.7;
     static final double GEAR_REDUCTION = 1;
     static final double WHEEL_DIAMETER_INCHES = 3.77953;
     static final double TICKS_PER_INCH = (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
 
     static final double LS_DIAMETER_INCHES = 1.404;
-    static final double TICKS_PER_INCH_LS =  (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (LS_DIAMETER_INCHES * Math.PI);;
+    static final double TICKS_PER_INCH_LS = (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (LS_DIAMETER_INCHES * Math.PI);
 
     static final double MAX_TICKS_LS = 30;
     static final double MIN_TICKS_LS = 10;
@@ -38,12 +41,14 @@ public class RobotEncoded {
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
         linearSlide = hardwareMap.get(DcMotorEx.class, "linearSlide");
+        claw = hardwareMap.get(Servo.class, "claw");
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        linearSlide.setDirection(DcMotorSimple.Direction.REVERSE);
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 //        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -57,6 +62,14 @@ public class RobotEncoded {
 //        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // set default ticks back to 0
     }
 
+    public void openClaw () {
+        claw.setPosition(0.5);
+
+    }
+
+    public void closeClaw () {
+        claw.setPosition(0.3);
+    }
 
     public void turnR(double Power) {
         frontRight.setPower(Power);
@@ -263,7 +276,8 @@ public class RobotEncoded {
         frontLeft.setVelocity(0);
         backRight.setVelocity(0);
     }
-    public void downLeft ( int distanceInches, double velocity){
+
+    public void downLeft(int distanceInches, double velocity) {
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         backRight.setTargetPosition(backRight.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
 
@@ -280,7 +294,7 @@ public class RobotEncoded {
         backRight.setVelocity(0);
     }
 
-    public void downRight ( int distanceInches, double velocity){
+    public void downRight(int distanceInches, double velocity) {
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
 
@@ -297,7 +311,7 @@ public class RobotEncoded {
         backLeft.setVelocity(0);
     }
 
-    public void stop_bot () {
+    public void stop_bot() {
         frontLeft.setVelocity(0);
         frontRight.setVelocity(0);
         backLeft.setVelocity(0);
@@ -309,16 +323,18 @@ public class RobotEncoded {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void raiseSlide(double velocity, int distanceInches) {
+    public void setSlidePosition(double pow, double distanceInches) {
 
-        if ((int) (distanceInches * TICKS_PER_INCH_LS) >= MAX_TICKS_LS || (int) (distanceInches * TICKS_PER_INCH_LS) < 0) return;
+        if (distanceInches >= MAX_TICKS_LS || distanceInches < 0)
+            return;
 
-       linearSlide.setTargetPosition((int)(distanceInches * TICKS_PER_INCH_LS));
-       linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       linearSlide.setVelocity(velocity);
+        linearSlide.setTargetPosition((int) (distanceInches * TICKS_PER_INCH_LS));
+        linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlide.setPower(pow);
 
-        //while(linearSlide.isBusy()) { }
+        while(linearSlide.isBusy()) { }
     }
+}
 
      /*
     public void resetAngle() {
@@ -351,5 +367,5 @@ public class RobotEncoded {
 
      */
 
-}
+
 

@@ -21,7 +21,7 @@ public class RedZoneRedTerminal extends LinearOpMode {
 
         robotencoded.forward(24,800);
 
-        robotencoded.backward(18, 800);
+        robotencoded.backward(19, 800);
 
         robotencoded.turnRight(24, 800);
 

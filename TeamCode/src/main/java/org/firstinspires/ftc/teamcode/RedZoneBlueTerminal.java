@@ -1,4 +1,7 @@
 package org.firstinspires.ftc.teamcode;
+import static org.firstinspires.ftc.teamcode.TestTeleop.GJ;
+import static org.firstinspires.ftc.teamcode.TestTeleop.MJ;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -13,17 +16,46 @@ public class RedZoneBlueTerminal extends LinearOpMode {
         waitForStart();
         //if (isStopRequested()) return;
 
+        robotencoded.closeClaw();
+
+        robotencoded.forward(24,800);
+
+        robotencoded.strafeLeft(12,800);
+
         robotencoded.forward(3,800);
 
-        robotencoded.turnRight(24,800);
+        robotencoded.setSlidePosition(0.5,MJ);
 
-        robotencoded.forward(24,800);
+        robotencoded.forward(2,800);
 
-        robotencoded.backward(18,800);
+        robotencoded.openClaw();
 
-        robotencoded.turnLeft(24,800);
+        robotencoded.backward(6,800);
 
-        robotencoded.forward(24,800);
+        robotencoded.setSlidePosition(0.5,GJ);
+
+        robotencoded.strafeRight(21,800);
+
+        /*
+        robotencoded.forward(12,800);
+
+        robotencoded.turnRight(20,800);
+
+        robotencoded.forward(9,800);
+
+        robotencoded.backward(8,800);
+
+        robotencoded.turnLeft(20,800);
+
+        robotencoded.forward(10, 800);
+
+        robotencoded.turnRight(20,800);
+
+        robotencoded.forward(8,800);
+
+        robotencoded.turnLeft(20,800);
+
+         */
 
         if (opModeIsActive()) {
             telemetry.addData("front right", robotencoded.frontRight.getPower());

@@ -13,17 +13,17 @@ public class BlueZoneBlueTerminal extends LinearOpMode {
         waitForStart();
 //        telemetry.addData("idk", robotencoded.)
 
-        robotencoded.forward(3,800);
+        robotencoded.forward(12,800);
 
         robotencoded.turnRight(24, 800);
 
-        robotencoded.forward(24,800);
+        robotencoded.forward(4,800);
 
-        robotencoded.backward(18, 800);
+        robotencoded.backward(4, 800);
 
-        robotencoded.turnLeft(24, 800);
+        robotencoded.turnRight(24, 800);
 
-        robotencoded.forward(24, 800);
+        robotencoded.forward(12, 800);
 
         if (opModeIsActive()) {
             telemetry.addData("front right", robotencoded.frontRight.getPower());
